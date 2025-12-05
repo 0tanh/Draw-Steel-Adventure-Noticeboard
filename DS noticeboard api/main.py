@@ -6,7 +6,6 @@ import sqlite3
 from datetime import datetime, timezone
 from dotenv import load_dotenv
 import os
-from pprint import pprint
 from enum import Enum
 import uuid
 from zoneinfo import ZoneInfo
@@ -19,12 +18,12 @@ db = os.getenv('TEST_DB')
 
 dbq = db.split("/")[-1].split(".")[0]
 app = FastAPI(title="Draw Steel Noticeboard API", 
-              description="API for interacting with the 0tanh Draw Steel Noticeboard",
-              summary="API that should allow for scheduling games and notifying users of the games being scheduled",
+              summary="API for interacting with the 0tanh Draw Steel Noticeboard",
+              description="API that should allow for scheduling games and notifying users of the games being scheduled",
               contact={"Support and More!":"betty.lossless@gmail.com"})
 
 class BoardInstance(BaseModel):
-    name: str = Field(alias="Name of this Noticeboard", examples=['Local Gameshop Noticeboard','All my friends Noticeboard'])
+    name: str = Field(alias="Name of this Noticeboard", example='Local Gameshop Noticeboard')
     created_by: str
 
 class Draw_Steel_Game(BaseModel):
@@ -59,11 +58,6 @@ async def new_game(game: Annotated[Draw_Steel_Game, "A new Draw Steel Game"]):
         cursor.close()
     return q
 
-@app.post('/games/new_players/')
-async def new_player(discord_id):
-    return {"player_id" :discord_id,
-            "date_created":datetime.now()}
-
 @app.post('/instances/new_instance')
 async def new_instance(instance: BoardInstance):
     with sqlite3.connect(db) as connection:
@@ -80,23 +74,22 @@ async def new_instance(instance: BoardInstance):
             f"'{instance.name}'",
             f"'{instance.created_by}'"
             )
-        
+
         cursor.execute(q)
         connection.commit()
         cursor.close()
     return f"{instance.name} instance created"
 
+@app.get('/games/upcoming_games')
+async def upcoming_games():
+    return {"This will return future games"}
 
-# @app.post('/query/insert_test')
-# async def testing_an_insertion(ll: LongList_Entry):
-#     q = "INSERT INTO {} (isbn,title,author,translator,format,pages,publisher,published,year,votes,rating) VALUES ({},{},{},{},{},{},{},{},{},{},{})".format(
-#         dbq, f"'{ll.isbn}'",f"'{ll.title}'",f"'{ll.author}'",f"'{ll.translator}'",f"'{ll.format}'",ll.pages,f"'{ll.publisher}'",f"'{ll.published}'",ll.year,ll.votes,ll.rating)
-    
-#     connection = sqlite3.connect(db)
-#     cursor = connection.cursor()
-#     cursor.execute(q)
-#     connection.commit()
-#     cursor.close()
-#     connection.close()
-#     return q
+@app.get('/me/my_games')
+async def my_games():
+    return {"This will return games"}
+
+@app.get('/me/my_characters')
+async def my_characters():
+    return {"This will return characters"}
+
 
