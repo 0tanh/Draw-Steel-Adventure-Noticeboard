@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 uvicorn = "*"
 fastapi = {extras = ["standard"], version = "*"}
+sqlmodel = "*"
+supabase = "*"
 
 [dev-packages]
 

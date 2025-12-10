@@ -1,7 +1,7 @@
 from re import Pattern
 from pydantic import BaseModel, Field
 from typing import Annotated
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 import sqlite3
 from datetime import datetime, timezone
 from dotenv import load_dotenv
@@ -9,6 +9,7 @@ import os
 from enum import Enum
 import uuid
 from zoneinfo import ZoneInfo
+from supabase import create_client, Client
 
 load_dotenv()
 tz = ZoneInfo(os.getenv('LOCATION'))
@@ -34,7 +35,7 @@ class Draw_Steel_Game(BaseModel):
     when: str = Field(alias="When the game is happening", example="Time24h, Day, Month, Year")
     content:str = Field(example="Description of the game")
 
-@app.post('/games/new_game/')
+@app.post('{instance}/games/new_game/')
 async def new_game(game: Annotated[Draw_Steel_Game, "A new Draw Steel Game"]):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
@@ -80,15 +81,16 @@ async def new_instance(instance: BoardInstance):
         cursor.close()
     return f"{instance.name} instance created"
 
-@app.get('/games/upcoming_games')
+@app.get('{instance}/games/upcoming_games')
 async def upcoming_games():
     return {"This will return future games"}
 
-@app.get('/me/my_games')
+
+@app.get('/{user}/my_games')
 async def my_games():
     return {"This will return games"}
 
-@app.get('/me/my_characters')
+@app.get('/{user}/my_characters')
 async def my_characters():
     return {"This will return characters"}
 

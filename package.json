@@ -1,0 +1,24 @@
+{
+  "name": "draw-steel-adventure-noticeboard",
+  "version": "1.0.0",
+  "description": "Student Project to make a working noticeboard for the game Draw Steel",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0tanh/Draw-Steel-Adventure-Noticeboard.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/0tanh/Draw-Steel-Adventure-Noticeboard/issues"
+  },
+  "homepage": "https://github.com/0tanh/Draw-Steel-Adventure-Noticeboard#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
